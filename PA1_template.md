@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 This is the finished assignment for the January 2016 Reproducible Research Course Project 1. It is a data analysis of of personal movement data from a personal activity monitoring device. 
 
@@ -18,8 +13,16 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.1.3
+```
+
+```r
 ## lct <- Sys.getlocale("LC_TIME"); Sys.setlocale("LC_TIME", "C")
 activity <- read.csv(unzip("activity.zip", files = "activity.csv"))
 activity$date <- as.Date(as.character(activity$date), format = "%Y-%m-%d")
@@ -29,13 +32,17 @@ activity$date <- as.Date(as.character(activity$date), format = "%Y-%m-%d")
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 stepsperday <- aggregate(steps~date, data = activity, sum)
 hist(stepsperday$steps, main = "Steps per Day", ylab = "Days", xlab="steps", breaks=8)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
 stepsperdaymean <- mean(stepsperday$steps, na.rm = TRUE)
 stepsperdaymedian <- median(stepsperday$steps, na.rm = TRUE)
-
 ```
 
 The mean total number of steps taken per day is 10766. The median is 10765.
@@ -44,48 +51,56 @@ The mean total number of steps taken per day is 10766. The median is 10765.
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 pattern <- aggregate(steps~interval, data = activity, mean)
 plot(pattern$interval, pattern$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Average daily activity pattern")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
 moststeps <- which.max(pattern$steps)
 moststepsinterval <- pattern[moststeps,]
-
 ```
 Interval 835, on average across all the days in the dataset, contains the maximum number of steps (206).
 
 ## Imputing missing values
 
-```{r}
-totalna <- sum(is.na(activity$steps))
 
+```r
+totalna <- sum(is.na(activity$steps))
 ```
 The activity data set contains 2,304 missing values.
 
-```{r}
+
+```r
 #replace NAs with average for each interval
 activity2 <- activity
 narows <- which(is.na(activity2$steps))
 activity2[narows,]$steps <- pattern$steps[pattern$interval %in% activity2[narows,]$interval]
-
-
 ```
 
 Activity2 is a new data set with all NA values filled in using the average number of steps taken in the corresponding interval. Below is a similar histogram as above calculated with the Activity2.
 
-```{r}
+
+```r
 stepsperday2 <- aggregate(steps~date, data = activity2, sum)
 hist(stepsperday2$steps, main = "Steps per Day", ylab = "Days", xlab="steps", breaks=8)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
+```r
 stepsperday2mean <- mean(stepsperday2$steps, na.rm = TRUE)
 stepsperday2median <- median(stepsperday2$steps, na.rm = TRUE)
-
-
 ```
 The mean and median number of steps per day using Activity2 (with imputed missing data) is almost exaclty the same as without the imputed data. The two histograms are fairly similar, and the conclusions ultimately drawn would probably be similar as well.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 #add column of factor values determining if the given date is a weekend or weekday
 days <- weekdays(activity2$date)
 midweek <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
@@ -104,7 +119,8 @@ pattern_weekend <- aggregate(steps~interval, data = activity_weekend, mean)
 par(mfrow=c(1,2))
 plot(pattern_midweek$interval, pattern_midweek$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Weekday average activity")
 plot(pattern_weekend$interval, pattern_weekend$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Weekend average activity")
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
 The subject tends to be more active on the weekend than during the week.
