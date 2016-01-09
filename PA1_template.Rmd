@@ -1,5 +1,5 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
+title: "Reproducible Research: Course Project 1"
 output: 
   html_document:
     keep_md: true
@@ -33,6 +33,9 @@ activity$date <- as.Date(as.character(activity$date), format = "%Y-%m-%d")
 stepsperday <- aggregate(steps~date, data = activity, sum)
 hist(stepsperday$steps, main = "Steps per Day", ylab = "Days", xlab="steps", breaks=8)
 
+dev.copy(png, './figures-html/totalsteps.png')
+dev.off()
+
 stepsperdaymean <- mean(stepsperday$steps, na.rm = TRUE)
 stepsperdaymedian <- median(stepsperday$steps, na.rm = TRUE)
 
@@ -47,6 +50,10 @@ The mean total number of steps taken per day is 10766. The median is 10765.
 ```{r}
 pattern <- aggregate(steps~interval, data = activity, mean)
 plot(pattern$interval, pattern$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Average daily activity pattern")
+
+dev.copy(png, './figures-html/averagedailyactivity.png')
+dev.off()
+
 moststeps <- which.max(pattern$steps)
 moststepsinterval <- pattern[moststeps,]
 
@@ -75,6 +82,8 @@ Activity2 is a new data set with all NA values filled in using the average numbe
 ```{r}
 stepsperday2 <- aggregate(steps~date, data = activity2, sum)
 hist(stepsperday2$steps, main = "Steps per Day", ylab = "Days", xlab="steps", breaks=8)
+dev.copy(png, 'imputedstepsperday.png')
+dev.off()
 
 stepsperday2mean <- mean(stepsperday2$steps, na.rm = TRUE)
 stepsperday2median <- median(stepsperday2$steps, na.rm = TRUE)
@@ -104,7 +113,8 @@ pattern_weekend <- aggregate(steps~interval, data = activity_weekend, mean)
 par(mfrow=c(1,2))
 plot(pattern_midweek$interval, pattern_midweek$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Weekday average activity")
 plot(pattern_weekend$interval, pattern_weekend$steps, type="l", xlab="Interval (5 minutes)", ylab="Steps (mean)", main="Weekend average activity")
-
+dev.copy(png, './figures-html/weekendvsweeday.png')
+dev.off()
 ```
 
 The subject tends to be more active on the weekend than during the week.

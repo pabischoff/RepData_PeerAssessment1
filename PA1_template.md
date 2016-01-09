@@ -1,4 +1,4 @@
-# Reproducible Research: Peer Assessment 1
+# Reproducible Research: Course Project 1
 
 This is the finished assignment for the January 2016 Reproducible Research Course Project 1. It is a data analysis of of personal movement data from a personal activity monitoring device. 
 
@@ -41,6 +41,24 @@ hist(stepsperday$steps, main = "Steps per Day", ylab = "Days", xlab="steps", bre
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 ```r
+dev.copy(png, './figures-html/totalsteps.png')
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
+
+```r
 stepsperdaymean <- mean(stepsperday$steps, na.rm = TRUE)
 stepsperdaymedian <- median(stepsperday$steps, na.rm = TRUE)
 ```
@@ -58,6 +76,24 @@ plot(pattern$interval, pattern$steps, type="l", xlab="Interval (5 minutes)", yla
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
+dev.copy(png, './figures-html/averagedailyactivity.png')
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 
 ```r
 moststeps <- which.max(pattern$steps)
@@ -92,6 +128,24 @@ hist(stepsperday2$steps, main = "Steps per Day", ylab = "Days", xlab="steps", br
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
 ```r
+dev.copy(png, 'imputedstepsperday.png')
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
+
+```r
 stepsperday2mean <- mean(stepsperday2$steps, na.rm = TRUE)
 stepsperday2median <- median(stepsperday2$steps, na.rm = TRUE)
 ```
@@ -122,5 +176,23 @@ plot(pattern_weekend$interval, pattern_weekend$steps, type="l", xlab="Interval (
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
+```r
+dev.copy(png, './figures-html/weekendvsweeday.png')
+```
+
+```
+## png 
+##   3
+```
+
+```r
+dev.off()
+```
+
+```
+## png 
+##   2
+```
 
 The subject tends to be more active on the weekend than during the week.
